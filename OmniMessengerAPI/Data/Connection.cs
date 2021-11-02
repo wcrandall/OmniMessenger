@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Data.Common;
 using Microsoft.Data.Sqlite;
 
@@ -7,13 +8,21 @@ namespace OmniMessengerAPI.Data
     {
         private static readonly string connectionString = "Data Source=contact.db";
 
-        public static int ExecuteNonQuery(string commandText, int timeout = 30)
+        public static int ExecuteNonQuery(string commandText,
+                                          Dictionary<string, object> parameters = null,
+                                          int timeout = 30)
         {
 
             SqliteConnection sqliteConnection = new SqliteConnection(connectionString);
             SqliteCommand command = sqliteConnection.CreateCommand();
             command.CommandTimeout = timeout;
             command.CommandText = commandText;
+            
+            if(parameters != null){
+                foreach(KeyValuePair<string, object> parameter in parameters){
+                    command.Parameters.AddWithValue(parameter.Key, parameter.Value);
+                }
+            }
 
             return command.ExecuteNonQuery();
         }

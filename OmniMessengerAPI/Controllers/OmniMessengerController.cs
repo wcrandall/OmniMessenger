@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using OmniMessengerAPI.Data.Interfaces;
 using OmniMessengerAPI.Dto;
 
 namespace OmniMessengerAPI.Controllers
@@ -8,18 +9,22 @@ namespace OmniMessengerAPI.Controllers
     [ApiController]
     public class OmniMessengerController:ControllerBase
     {
-        private readonly List<ContactInfo> contactInfos = new List<ContactInfo>{
-            new ContactInfo{
-                FirstName = "nofirstname",
+        private IContactInfoRepository contactInfoRepository;
+        public OmniMessengerController()
+        {
+            contactInfoRepository.InsertContactInfo(new ContactInfo{
+                FirstName = "noname",
                 LastName = "nolastname",
-                PhoneNumber = "",
-                Email = ""
-            }
-        };
+                Email = "none@none.com",
+                PhoneNumber = "38838383883"
+            });    
+        }
 
         [HttpGet]
         public ActionResult<List<ContactInfo>> GetContactInfos(){
-            return Ok(contactInfos);
+            
+            return Ok();
         }
+
     }
 }
