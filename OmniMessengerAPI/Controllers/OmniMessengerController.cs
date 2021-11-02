@@ -7,23 +7,27 @@ namespace OmniMessengerAPI.Controllers
 {
     [Route("message")]
     [ApiController]
-    public class OmniMessengerController:ControllerBase
+    public class OmniMessengerController : ControllerBase
     {
         private IContactInfoRepository contactInfoRepository;
-        public OmniMessengerController()
+        public OmniMessengerController(IContactInfoRepository contactInfoRepository)
         {
-            contactInfoRepository.InsertContactInfo(new ContactInfo{
-                FirstName = "noname",
-                LastName = "nolastname",
-                Email = "none@none.com",
-                PhoneNumber = "38838383883"
-            });    
+            this.contactInfoRepository = contactInfoRepository ?? throw new System.ArgumentNullException(nameof(contactInfoRepository));
+
+            // contactInfoRepository.InsertContactInfo(new ContactInfo
+            // {
+            //     FirstName = "noname",
+            //     LastName = "nolastname",
+            //     Email = "none@none.com",
+            //     PhoneNumber = "38838383883"
+            // });
         }
 
         [HttpGet]
-        public ActionResult<List<ContactInfo>> GetContactInfos(){
-            
-            return Ok();
+        public ActionResult<List<ContactInfo>> GetContactInfos()
+        {
+
+            return Ok(this.contactInfoRepository.GetContactInfos());
         }
 
     }

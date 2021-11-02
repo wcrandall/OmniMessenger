@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OmniMessengerAPI.Data;
+using OmniMessengerAPI.Data.Interfaces;
 
 namespace OmniMessengerAPI
 {
@@ -18,12 +20,15 @@ namespace OmniMessengerAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options =>{
-                options.AddDefaultPolicy(builder=>{
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
                     builder.WithOrigins("http://localhost:3000");
                 });
             });
             services.AddControllers();
+            services.AddScoped<IContactInfoRepository, ContactInfoRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
